@@ -13,7 +13,7 @@
         android:layout_gravity="center"
         android:scaleType="fitCenter"
         android:contentDescription="@string/photo_of_the_day_stub"
-        />
+        app:srcCompat="@drawable/ic_no_photo" />
 
 
 </FrameLayout>
