@@ -1,25 +1,20 @@
 package com.example.workmaterial.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.add
-import androidx.fragment.app.commit
+import androidx.appcompat.app.AppCompatActivity
 import com.example.workmaterial.R
-import com.example.workmaterial.databinding.ActivityMainBinding
-
+import com.example.workmaterial.ui.fragment.DailyImageFragment
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
-        if (savedInstanceState==null){
-            supportFragmentManager.commit {
-                setReorderingAllowed(true)
-                add<BasicFragment>(R.id.fragment_container_view)
 
-            }
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        val fragment = DailyImageFragment()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_daily, fragment)
+        transaction.disallowAddToBackStack()
+        transaction.commit()
+
     }
 }

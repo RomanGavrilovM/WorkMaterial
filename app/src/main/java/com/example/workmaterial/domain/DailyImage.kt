@@ -1,7 +1,8 @@
-package com.example.workmaterial.model
+package com.example.workmaterial.domain
 
 sealed class DailyImage {
-    data class Success(val serverResponseData: PODServerResponseData) : DailyImage()
+
+    data class Success(val serverResponseData: NASAImageResponse) : DailyImage()
 
     data class Error(val error: Throwable) : DailyImage()
 
