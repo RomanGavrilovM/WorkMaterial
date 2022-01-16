@@ -7,47 +7,47 @@ import retrofit2.Call
 import retrofit2.Response
 import com.example.workmaterial.BuildConfig
 import com.example.workmaterial.data.NasaApiRetrofit
-import com.example.workmaterial.domain.DailyImage
-import com.example.workmaterial.domain.NASAImageResponse as NASAImageResponse
+import com.example.workmaterial.domain.entity.DailyImage
+import javax.security.auth.callback.Callback
+import com.example.workmaterial.domain.entity.NASAImageResponse as NASAImageResponse
 
 class DailyImageViewModel(
-    private val liveDataForViewToObserve: MutableLiveData<DailyImage> = MutableLiveData(),
-    private val retrofitImpl: NasaApiRetrofit = NasaApiRetrofit(),
-) : ViewModel() {
+    private val liveDataForViewToObserve:MutableLiveData<DailyImage> = MutableLiveData(),
+    private val retrofitImpl: NasaApiRetrofit = NasaApiRetrofit()
+):ViewModel() {
 
-    fun getImageData(): LiveData<DailyImage> {
+    fun getImageData():LiveData<DailyImage>{
         sendServerRequest()
         return liveDataForViewToObserve
     }
 
-    private fun sendServerRequest() {
+    private fun sendServerRequest(){
         liveDataForViewToObserve.value = DailyImage.Loading(null)
         val apiKey = BuildConfig.NASA_API_KEY
-        if (apiKey.isBlank()) {
+        if(apiKey.isBlank()){
             DailyImage.Error(Throwable("Нужен API ключ"))
-        } else {
+        } else{
             executeImageRequest(apiKey)
         }
     }
 
-    private fun executeImageRequest(apiKey: String) {
-        retrofitImpl.getNasaService()
-            .getImage(apiKey)
-            .enqueue(object : retrofit2.Callback<NASAImageResponse> {
+    private fun executeImageRequest(apiKey:String){
+        retrofitImpl.getNasaService().getImage(apiKey).enqueue(
+            object : retrofit2.Callback<NASAImageResponse> {
                 override fun onResponse(
                     call: Call<NASAImageResponse>,
-                    response: Response<NASAImageResponse>,
+                    response: Response<NASAImageResponse>
                 ) {
                     handleImageResponse(response)
                 }
 
                 override fun onFailure(call: Call<NASAImageResponse>, t: Throwable) {
-                    liveDataForViewToObserve.value = DailyImage.Error(t)
+                    liveDataForViewToObserve.value =DailyImage.Error(t)
                 }
 
-            })
+            }
+        )
     }
-
     private fun handleImageResponse(response: Response<NASAImageResponse>) {
         if (response.isSuccessful && response.body() != null) {
             liveDataForViewToObserve.value = DailyImage.Success(response.body()!!)
@@ -61,5 +61,7 @@ class DailyImageViewModel(
             liveDataForViewToObserve.value = DailyImage.Error(Throwable(message))
         }
     }
+
+
 
 }

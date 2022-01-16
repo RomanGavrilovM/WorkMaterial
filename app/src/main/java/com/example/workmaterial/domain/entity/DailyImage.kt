@@ -1,4 +1,4 @@
-package com.example.workmaterial.domain
+package com.example.workmaterial.domain.entity
 
 sealed class DailyImage {
 

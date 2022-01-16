@@ -1,4 +1,4 @@
-package com.example.workmaterial.domain
+package com.example.workmaterial.domain.entity
 
 import com.google.gson.annotations.SerializedName
 
@@ -18,5 +18,5 @@ data class NASAImageResponse(
     @SerializedName("title")
     val title: String?,
     @SerializedName("url")
-    val url: String?,
+    val url: String?
 )
